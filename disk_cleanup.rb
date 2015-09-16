@@ -31,7 +31,7 @@
     if !rm_build.empty?
       rm_build.each do |build|
         $logger.info "Removing build #{build} in dir #{dir_path} "
-        #FileUtils.rm_rf(build)
+        FileUtils.rm_rf(build)
       end
     end
   end
@@ -50,7 +50,7 @@
         if !rm_branch.empty?
           rm_branch.each do |old_branch|
             $logger.info "Removing the branch #{old_branch} "
-            #FileUtils.rm_rf (old_branch)
+            FileUtils.rm_rf (old_branch)
           end
         end
         @branch_list = @branch_list - rm_branch

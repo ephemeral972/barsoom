@@ -11,6 +11,7 @@
   $logger = Logger.new(STDOUT)
   $logger.level = Logger::INFO
 
+  # have to paratmetrize the number of builds to cleanup
 
   # do the builds cleanup
   def build_cleanup (dir_path, build_path )

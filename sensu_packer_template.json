@@ -1,0 +1,43 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-west-2",
+    "source_ami_filter": {
+      "filters": {
+      "virtualization-type": "hvm",
+      "name": "*ubuntu-xenial-16.04-amd64-server-*",
+      "root-device-type": "ebs"
+      },
+      "owners": ["099720109477"],
+      "most_recent": true
+    },
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "packer-sensu-all {{timestamp}}"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo apt-get update",
+      "sudo apt-get install -y redis-server",
+      "sudo wget http://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb",
+      "sudo dpkg -i erlang-solutions_1.0_all.deb",
+      "sudo apt-get update",
+      "sudo apt-get -y install socat erlang-nox=1:20.0-1",
+      "sleep 30",
+      "sudo wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.6.9/rabbitmq-server_3.6.9-1_all.deb",
+      "sudo dpkg -i rabbitmq-server_3.6.9-1_all.deb",
+      "wget -q https://sensu.global.ssl.fastly.net/apt/pubkey.gpg -O- | sudo apt-key add -",
+      "echo 'deb  https://sensu.global.ssl.fastly.net/apt xenial main' | sudo tee /etc/apt/sources.list.d/sensu.list",
+      "sudo apt-get update",
+      "sudo apt-get -y install sensu"
+    ]
+  }]
+}

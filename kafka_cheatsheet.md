@@ -25,14 +25,18 @@ Kafka Cheatsheet
 
 > /opt/kafka/bin/kafka-topics.sh --zookeeper <ip/hostname of zookeeper>:2181 --create --replication-factor 2 --partitions 8 --topic <topic_name>
 
->/opt/kafka/bin/kafka-preferred-replica-election.sh  -zookeeper <ip/hostname of zookeeper>
+
+### Replica Election Tool
+
+> /opt/kafka/bin/kafka-preferred-replica-election.sh  -zookeeper <ip/hostname of zookeeper> --path-to-json-file topicPartitionList.json
+
 
 
 ### Alter topic
 
 > /opt/kafka/bin/kafka-topics.sh --zookeeper localhost:2181 --alter --topic my-topic --config max.message.bytes=128000
 
-* It is possible to increase the number of partitions per topic but to reduce it you would need to remap the partitions
+* It is possible to increase the number of partitions per topic but you cannot reduce the number of partitions once created
 
 >bin/kafka-topics.sh --zookeeper zk_host:port/chroot --alter --topic my_topic_name  --partitions 40
 
@@ -49,7 +53,7 @@ Kafka Cheatsheet
 
 * Note: Adding and removing config from a topic should be done using kafka-configs.sh
 
-### ADd config
+### Add config
 
 > /opt/kafka/bin/kafka-configs.sh  --zookeeper <zk-ip>:2181  --entity-type topics   \
   --alter --entity-name <topic-name> --add-config retention.ms=86400000 
@@ -65,4 +69,5 @@ Kafka Cheatsheet
 > bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic <topic-name> --from-beginning
 
 ###  Delete topic
->/opt/kafka/bin/kafka-topics.sh --zookeeper <zk ip>:2181 --delete --topic <topic-name>
+
+> /opt/kafka/bin/kafka-topics.sh --zookeeper <zk ip>:2181 --delete --topic <topic-name>
